@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معرض مشاريع المستقبل 2080</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- متغيرات ألوان 2080 --- */
+        :root {
+            --bg-color: #050505;
+            --card-bg: rgba(20, 20, 25, 0.6);
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --text-color: #ffffff;
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(188, 19, 254, 0.1), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(0, 243, 255, 0.1), transparent 25%);
+            color: var(--text-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- تأثيرات الخلفية المتحركة --- */
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            transform: perspective(500px) rotateX(20deg) scale(1.5);
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(20deg) scale(1.5) translateY(0); }
+            100% { transform: perspective(500px) rotateX(20deg) scale(1.5) translateY(50px); }
+        }
+
+        /* --- الهيدر --- */
+        header {
+            text-align: center;
+            padding: 4rem 1rem;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            background: linear-gradient(90deg, var(--neon-blue), #fff, var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+            animation: glowText 3s infinite alternate;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #ccc;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        @keyframes glowText {
+            from { filter: drop-shadow(0 0 5px rgba(0,243,255,0.4)); }
+            to { filter: drop-shadow(0 0 15px rgba(188,19,254,0.6)); }
+        }
+
+        /* --- الشبكة --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex: 1; /* لجعل الفوتر ينزل للأسفل دائماً */
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* --- الكارت المستقبلي --- */
+        .project-card {
+            background: var(--card-bg);
+            border: var(--glass-border);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 0 20px rgba(0, 243, 255, 0.4),
+                inset 0 0 20px rgba(0, 243, 255, 0.1);
+            border-color: var(--neon-blue);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: 0.5s;
+            transform: skewX(-25deg);
+        }
+
+        .project-card:hover::before {
+            left: 100%;
+        }
+
+        .card-img-container {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .card-img {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            color: var(--neon-blue);
+            margin-bottom: 5px;
+            font-weight: 900;
+        }
+
+        .student-name {
+            display: block;
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .btn-glow {
+            display: inline-block;
+            padding: 8px 20px;
+            background: transparent;
+            color: var(--neon-purple);
+            border: 1px solid var(--neon-purple);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(188, 19, 254, 0.1);
+        }
+
+        .project-card:hover .btn-glow {
+            background: var(--neon-purple);
+            color: white;
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.6);
+        }
+
+        /* --- تنسيق التوقيع (الأسماء) --- */
+        .footer-signature {
+            text-align: center;
+            padding: 4rem 1rem 2rem;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(to top, rgba(0,0,0,1), transparent);
+        }
+
+        .signature-main {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--neon-purple);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(188, 19, 254, 0.6);
+            animation: flicker 3s infinite;
+        }
+
+        .signature-sub {
+            font-family: 'Courier New', monospace; /* خط يشبه البرمجة */
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 8px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+            52% { opacity: 0.9; }
+            54% { opacity: 0.7; }
+        }
+
+        /* --- المودال --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #111;
+            border: 1px solid var(--neon-blue);
+            width: 90%;
+            max-width: 800px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8) translateY(50px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px; left: 20px;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: 0.3s;
+            text-shadow: 0 0 10px red;
+        }
+        .close-btn:hover { color: red; transform: rotate(90deg); }
+
+        .modal-header-img {
+            width: 100%;
+            height: 350px;
+            background-size: cover;
+            background-position: center;
+            border-bottom: 2px solid var(--neon-blue);
+        }
+
+        .modal-body {
+            padding: 30px;
+            color: #ddd;
+        }
+
+        .modal-title { 
+            font-size: 2.2rem; 
+            color: var(--neon-blue); 
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
+        }
+        
+        .modal-student {
+            color: var(--neon-purple);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .modal-desc {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-purple); }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-grid"></div>
+
+    <header>
+        <h1>ENGINEERING EXPO 2025</h1>
+        <p>معرض مشاريع المستقبل - قسم علوم الحاسب</p>
+    </header>
+
+    <div class="container">
+        <div class="projects-grid" id="gridContainer"></div>
+    </div>
+
+    <div class="footer-signature">
+        <h3 class="signature-main">Habiba Zaki</h3>
+        <p class="signature-sub">BY: Marwan Swedan</p>
+    </div>
+
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="modal-header-img" id="modalImg"></div>
+            <div class="modal-body">
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <div class="modal-student" id="modalStudent"></div>
+                <p class="modal-desc" id="modalDesc"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // منطقة البيانات (Data Zone)
+        // ==========================================
+        const projectsData = [
+            {
+                id: 1,
+                title: "نظام الذكاء الاصطناعي الطبي",
+                student: "م. مروان - Team Leader",
+                image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                description: "مشروع يستخدم الشبكات العصبية لتحليل الأشعة السينية بدقة تتجاوز 99%.\nواجهة المستخدم مصممة لتعمل بالأوامر الصوتية داخل غرف العمليات."
+            },
+            {
+                id: 2,
+                title: "المدينة الذكية (Cyber City)",
+                student: "م. أحمد خالد",
+                image: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                description: "نموذج محاكاة لإدارة الطاقة والمرور في المدن الكبرى باستخدام إنترنت الأشياء (IoT).\nيقلل استهلاك الطاقة بنسبة 40%."
+            },
+            {
+                id: 3,
+                title: "التشفير الكمي (Quantum Security)",
+                student: "م. سارة حسن",
+                image: "https://images.unsplash.com/photo-1558494949-ef526b01201b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                description: "بروتوكول أمان جديد يعتمد على فيزياء الكم لحماية البيانات البنكية من الاختراق المستقبلي.\nتم اختباره ضد هجمات Brute Force."
+            },
+            {
+                id: 4,
+                title: "درون الاستكشاف الفضائي",
+                student: "م. كريم عادل",
+                image: "https://images.unsplash.com/photo-1506947411487-a56738267384?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                description: "طائرة مسيرة ذاتية القيادة مخصصة للعمل في بيئات المريخ.\nتستخدم مستشعرات Lidar لرسم خرائط ثلاثية الأبعاد."
+            }
+        ];
+
+        // ==========================================
+        // كود المحرك
+        // ==========================================
+
+        const gridContainer = document.getElementById('gridContainer');
+        const modal = document.getElementById('projectModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalStudent = document.getElementById('modalStudent');
+        const modalDesc = document.getElementById('modalDesc');
+
+        function renderProjects() {
+            gridContainer.innerHTML = '';
+            projectsData.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                card.onclick = () => openModal(project);
+                
+                card.innerHTML = `
+                    <div class="card-img-container">
+                        <img src="${project.image}" alt="${project.title}" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">${project.title}</div>
+                        <span class="student-name">${project.student}</span>
+                        <span class="btn-glow">عرض البيانات</span>
+                    </div>
+                `;
+                gridContainer.appendChild(card);
+            });
+        }
+
+        function openModal(project) {
+            modalImg.style.backgroundImage = `url('${project.image}')`;
+            modalTitle.innerText = project.title;
+            modalStudent.innerText = project.student;
+            modalDesc.innerText = project.description;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        renderProjects();
+    </script>
+</body>
+</html>
